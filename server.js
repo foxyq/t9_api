@@ -60,17 +60,29 @@ app.use("/api", router);
 
 // custom functions
 function searchForWord(searchString) {
+  var readline = require("readline");
   var fs = require("fs");
 
-  fs.readFile("./words.txt", function(err, content) {
-    if (err) throw err;
-
-    console.log(
-      content.indexOf(searchString) > -1
-        ? "DICTIONARY WORD: " + searchString
-        : null
-    );
+  var myInterface = readline.createInterface({
+    input: fs.createReadStream("./words.txt")
   });
+
+  var lineno = 0;
+  myInterface.on("line", function(line) {
+    lineno++;
+    if (line === searchString)
+      console.log("Line number " + lineno + ": " + line);
+  });
+
+  // OLD CODE - returns index of substring (e.g. returns "clothes" when searching for "the")
+  // fs.readFile("./words.txt", function(err, content) {
+  //   if (err) throw err;
+  //   console.log(
+  //     content.indexOf(searchString) > -1
+  //       ? "DICTIONARY WORD: " + searchString
+  //       : null
+  //   );
+  // });
 }
 
 function charFromNumbers(word, letter = "", final = "") {
