@@ -34,24 +34,23 @@ router.get("/", function(req, res) {
 });
 
 router.route("/numbers").post(function(req, res) {
-  // debugging logs
-  // console.log("\n -- /api/numbers call");
-  // console.log(" ---- with parameter " + req.body.numbers);
-
   // parse input to words, save in global var results
-  numberToChars(req.body.numbers);
+  // check if input is not empty
+  // frontend will validate NUMBER ONLY input
+  results = [];
+  dictWords = [];
 
-  // search for each of the possible words from input in dict file
-  for (let i = 0; i < results.length; i++) {
-    searchForWord(results[i]);
-  }
+  if (req.body.numbers !== "") {
+    numberToChars(req.body.numbers);
 
-  res.setHeader("Content-Type", "application/json");
+    searchForWords(results);
 
-  res.json({
-    // JSON with 1) suggestions 2) dict words
-    message: "Parsing number input as T9. Input: " + req.body.numbers
-  });
+    res.setHeader("Content-Type", "application/json");
+    res.json({
+      // JSON with 1) suggestions 2) dict words
+      message: "Parsed number " + req.body.numbers + " as T9. Input: "
+    });
+  } else res.json({ message: "Empty input" });
 });
 
 // all of our routes will be prefixed with /api
@@ -61,8 +60,8 @@ app.use("/api", router);
 // ------------------------------------- FUNCTIONS for logic
 
 // search for word (from suggestions) in dictionary
-// dictionary from MAC's cat /usr/share/dict/words > words.txt
-function searchForWord(searchString) {
+// dictionary from UNIX's cat /usr/share/dict/words > words.txt
+function searchForWords(suggestions) {
   var readline = require("readline");
   var fs = require("fs");
 
@@ -73,10 +72,14 @@ function searchForWord(searchString) {
   var lineno = 0;
   myInterface.on("line", function(line) {
     lineno++;
-    if (line === searchString) {
-      console.log("Line number " + lineno + ": " + line);
-      dictWords.push(line);
-      // return line;
+
+    // check each item from list of suggestions agains dictionary file
+    for (let i = 0; i < suggestions.length; i++) {
+      // match found => is strictly equal (length + content)
+      if (line === suggestions[i]) {
+        console.log("Line number " + lineno + ": " + line);
+        dictWords.push(line);
+      }
     }
   });
 }
@@ -84,16 +87,16 @@ function searchForWord(searchString) {
 // convert numbers (input) to chars
 function numberToChars(word, letter = "", final = "") {
   const keypad = [
-    [" "],
-    [".", ",", "!", "?"],
-    ["a", "b", "c"],
-    ["d", "e", "f"],
-    ["g", "h", "i"],
-    ["j", "k", "l"],
-    ["m", "n", "o"],
-    ["p", "q", "r", "s"],
-    ["t", "u", "v"],
-    ["w", "x", "y", "z"]
+    [" "], // 0
+    [".", ",", "!", "?"], // 1
+    ["a", "b", "c"], // 2
+    ["d", "e", "f"], // 3
+    ["g", "h", "i"], // 4
+    ["j", "k", "l"], // 5
+    ["m", "n", "o"], // 6
+    ["p", "q", "r", "s"], // 7
+    ["t", "u", "v"], // 8
+    ["w", "x", "y", "z"] // 9
   ];
 
   // if letter !empty (we're not done) add letter to the final word
