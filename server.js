@@ -30,7 +30,10 @@ router.use(function(req, res, next) {
 // test route to make sure everything is working
 // (accessed at GET http://localhost:PORT/api)
 router.get("/", function(req, res) {
-  res.json({ message: "hooray! we're online!" });
+  res.json({
+    message: "hooray! we're online!",
+    words: dictWords
+  });
 });
 
 router.route("/numbers").post(function(req, res) {
@@ -45,10 +48,13 @@ router.route("/numbers").post(function(req, res) {
 
     searchForWords(results);
 
+    // async ? ?? ?? ?  ---------------------------------------------
     res.setHeader("Content-Type", "application/json");
     res.json({
       // JSON with 1) suggestions 2) dict words
-      message: "Parsed number " + req.body.numbers + " as T9. Input: "
+      // message: "Parsed number " + req.body.numbers + " as T9 Input ",
+      suggestions: results,
+      words: dictWords
     });
   } else res.json({ message: "Empty input" });
 });
@@ -79,6 +85,7 @@ function searchForWords(suggestions) {
       if (line === suggestions[i]) {
         console.log("Line number " + lineno + ": " + line);
         dictWords.push(line);
+        // console.log(dictWords);
       }
     }
   });
