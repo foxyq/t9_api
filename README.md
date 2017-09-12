@@ -1,5 +1,5 @@
 # t9_api
-kiwi homework.com / backend part
+backend part
 
 1. git clone
 2. (npm install)
