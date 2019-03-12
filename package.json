@@ -5,5 +5,10 @@
     "body-parser": "~1.0.1",
     "cors": "^2.8.4",
     "express": "~4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   }
 }
