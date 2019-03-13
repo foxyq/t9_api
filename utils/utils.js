@@ -29,11 +29,11 @@ function loadDictfromFile(path) {
 
     return dict;
   } catch (e) {
-    throw new Error(e);
+    throw new Error('no such file');
   }
 }
 
-function getSuggestions(number) {
+function getSuggestions(numberKey) {
   const suggestions = [];
 
   const numberToChars = (word, letter = '', final = '') => {
@@ -62,7 +62,11 @@ function getSuggestions(number) {
     return null;
   };
 
-  numberToChars(number);
+  if (Number.isInteger(numberKey)) {
+    return '';
+  }
+
+  numberToChars(numberKey);
 
   return suggestions;
 }

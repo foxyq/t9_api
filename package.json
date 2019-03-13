@@ -4,11 +4,22 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "cors": "^2.8.4",
+    "eslint-plugin-jest": "^22.3.2",
     "express": "~4.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^5.15.1",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0"
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.5.0",
+    "superagent": "^4.1.0",
+    "supertest": "^4.0.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test jest --forceExit",
+    "test:w": "NODE_ENV=test jest --watchAll",
+    "test:c": "jest --coverage"
   }
 }
