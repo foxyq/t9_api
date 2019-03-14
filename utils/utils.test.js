@@ -42,8 +42,16 @@ describe('getSuggestions', () => {
     });
   });
 
-  test('returns empty string on integer input', () => {
+  test('returns empty string on correct integer input', () => {
     const sugs = [[0, ''], [1, ''], [456, ''], [232, '']];
+
+    sugs.forEach(sug => {
+      expect(getSuggestions(sug[0])).toEqual(sug[1]);
+    });
+  });
+
+  test('returns empty string on incorrect integer input', () => {
+    const sugs = [[-1, ''], [-55, '']];
 
     sugs.forEach(sug => {
       expect(getSuggestions(sug[0])).toEqual(sug[1]);

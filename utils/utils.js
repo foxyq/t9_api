@@ -43,6 +43,15 @@ function getSuggestions(numberKey) {
       result += letter;
     }
 
+    const getCharsForDigit = (firstDigit, rest) => {
+      if (firstDigit >= 0 && firstDigit <= 9) {
+        for (let i = 0; i < keypad[firstDigit].length; i += 1) {
+          const newLetter = keypad[firstDigit][i];
+          numberToChars(rest, newLetter, result);
+        }
+      }
+    };
+
     // if we're done / there are no more letters in the word
     if (word === '') {
       suggestions.push(result);
@@ -52,12 +61,7 @@ function getSuggestions(numberKey) {
     const firstDigit = word[0];
     const rest = word.substr(1);
 
-    if (firstDigit >= 0 && firstDigit <= 9) {
-      for (let i = 0; i < keypad[firstDigit].length; i += 1) {
-        const newLetter = keypad[firstDigit][i];
-        numberToChars(rest, newLetter, result);
-      }
-    }
+    getCharsForDigit(firstDigit, rest);
 
     return null;
   };
